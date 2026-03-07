@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enkaare Counters</title>
+    <!-- Importing Playfair Display from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #2f7983;
+            --text-white: #ffffff;
+            --transition-speed: 3000ms; /* All counters end at this time */
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            font-family: "Playfair Display", serif;
+            overflow: hidden;
+        }
+
+        /* Initial Counter Scene */
+        #scene-counters {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1.5s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
+        }
+
+        .counters-grid {
+            display: flex;
+            gap: 4rem;
+            text-align: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .counter-item {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+
+        .number {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 800;
+        }
+
+        .label {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+            opacity: 0.8;
+            margin-top: -0.5rem;
+        }
+
+        #country-name {
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-top: 2rem;
+            height: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Final Brand Scene */
+        #scene-brand {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.5);
+            pointer-events: none;
+            transition: all 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        #scene-brand.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .brand-name {
+            font-size: clamp(4rem, 15vw, 10rem);
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 3vw, 1.8rem);
+            font-style: italic;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease 1s;
+        }
+
+        #scene-brand.active .tagline {
+            opacity: 0.9;
+            transform: translateY(0);
+        }
+
+        /* Logo Finale */
+        #logo-container {
+            margin-top: 3rem;
+            opacity: 0;
+            transition: opacity 2s ease 2.5s;
+            position: relative;
+        }
+
+        #logo-container img {
+            max-width: 200px;
+            height: auto;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+        }
+
+        /* Shiny Effect for Logo */
+        #logo-container::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-25deg);
+            transition: none;
+        }
+
+        #scene-brand.active #logo-container {
+            opacity: 1;
+        }
+
+        #scene-brand.active #logo-container::after {
+            left: 150%;
+            transition: left 1.5s ease-in-out 3.5s;
+        }
+
+        /* Zoom transitions */
+        .zoom-out {
+            transform: scale(4) !important;
+            opacity: 0 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Scene 1: Counters -->
+    <div id="scene-counters">
+        <div class="counters-grid">
+            <div class="counter-item">
+                <span class="number" id="count-countries">0</span>
+                <span class="label">Countries</span>
+            </div>
+            <div class="counter-item">
+                <span class="number" id="count-users">0</span>
+                <span class="label">Users</span>
+            </div>
+            <div class="counter-item">
+                <span class="number" id="count-companies">0</span>
+                <span class="label">Companies</span>
+            </div>
+        </div>
+        <div id="country-name">Initializing...</div>
+    </div>
+
+    <!-- Scene 2: Branding -->
+    <div id="scene-brand">
+        <h1 class="brand-name">Enkaare</h1>
+        <p class="tagline">Connecting You to the right talent</p>
+        <div id="logo-container">
+            <img src="https://enkaare.com/assets/enkaare-logo-CyitWQQf.png" alt="Enkaare Logo">
+        </div>
+    </div>
+
+    <script>
+        const countries = [
+            "India", "China", "United States", "Indonesia", "Pakistan", "Nigeria", "Brazil", "Bangladesh", "Russia", "Mexico", 
+            "Japan", "Philippines", "Ethiopia", "Egypt", "DR Congo", "Vietnam", "Iran", "Turkey", "Germany", "Thailand", 
+            "United Kingdom", "France", "Tanzania", "South Africa", "Italy", "Myanmar", "Kenya", "South Korea", "Colombia", "Spain", 
+            "Argentina", "Algeria", "Sudan", "Uganda", "Ukraine", "Iraq", "Canada", "Poland", "Morocco", "Saudi Arabia", 
+            "Uzbekistan", "Peru", "Malaysia", "Afghanistan", "Ghana", "Angola", "Mozambique", "Yemen", "Nepal", "Madagascar", 
+            "Venezuela", "Côte d'Ivoire", "Cameroon", "Niger", "Australia", "North Korea", "Taiwan", "Sri Lanka", "Burkina Faso", "Mali", 
+            "Romania", "Malawi", "Chile", "Kazakhstan", "Guatemala", "Zambia", "Ecuador", "Netherlands", "Syria", "Senegal", 
+            "Chad", "Somalia", "Cambodia", "Zimbabwe", "Guinea", "Rwanda", "Benin", "Burundi", "Tunisia", "Bolivia", 
+            "Haiti", "Belgium", "Jordan", "Dominican Republic", "Cuba", "South Sudan", "Sweden", "Honduras", "Czech Republic", "Azerbaijan", 
+            "Greece", "Portugal", "Hungary", "Tajikistan", "UAE", "Belarus", "Israel", "Austria", "Switzerland", "Togo"
+        ];
+
+        const duration = 4000; // 4 seconds total for counters
+
+        function animateValues() {
+            const countryCountEl = document.getElementById('count-countries');
+            const userCountEl = document.getElementById('count-users');
+            const companyCountEl = document.getElementById('count-companies');
+            const countryNameEl = document.getElementById('country-name');
+
+            let startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+
+                // Counters
+                const currentCountryVal = Math.floor(progress * countries.length);
+                const currentUserVal = Math.floor(progress * 526);
+                const currentCompanyVal = Math.floor(progress * 9);
+
+                countryCountEl.innerText = Math.max(1, currentCountryVal);
+                userCountEl.innerText = Math.max(1, currentUserVal);
+                companyCountEl.innerText = Math.max(1, currentCompanyVal);
+
+                // Country Name Cycling
+                // We pick an index based on progress to ensure we cycle through the list
+                const nameIndex = Math.floor(progress * (countries.length - 1));
+                countryNameEl.innerText = countries[nameIndex];
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    // Final display check
+                    countryCountEl.innerText = countries.length;
+                    userCountEl.innerText = 526;
+                    companyCountEl.innerText = 9;
+                    countryNameEl.innerText = countries[countries.length - 1];
+                    
+                    // Trigger Transition
+                    setTimeout(triggerTransition, 800);
+                }
+            }
+
+            requestAnimationFrame(step);
+        }
+
+        function triggerTransition() {
+            const scene1 = document.getElementById('scene-counters');
+            const scene2 = document.getElementById('scene-brand');
+
+            // Zoom into the current scene (making it disappear)
+            scene1.classList.add('zoom-out');
+            
+            // Activate the brand scene
+            setTimeout(() => {
+                scene2.classList.add('active');
+            }, 500);
+        }
+
+        window.onload = animateValues;
+    </script>
+</body>
+</html>
