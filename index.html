@@ -3,268 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enkaare Counters</title>
-    <!-- Importing Playfair Display from Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-    
+    <title>GovBond Direct | Premium Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --bg-color: #2f7983;
-            --text-white: #ffffff;
-        }
-
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-color);
-            color: var(--text-white);
-            font-family: "Playfair Display", serif;
-            overflow: hidden;
-        }
-
-        /* Initial Counter Scene */
-        #scene-counters {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 1.8s cubic-bezier(0.7, 0, 0.3, 1), opacity 1.2s ease;
-            z-index: 10;
-        }
-
-        .counters-grid {
-            display: flex;
-            gap: 4rem;
-            text-align: center;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .counter-item {
-            display: flex;
-            flex-direction: column;
-            min-width: 150px;
-        }
-
-        .number {
-            font-size: clamp(3rem, 10vw, 6rem);
-            font-weight: 800;
-        }
-
-        .label {
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2rem;
-            opacity: 0.8;
-            margin-top: -0.5rem;
-        }
-
-        #country-name {
-            font-size: 1.5rem;
-            font-style: italic;
-            margin-top: 2rem;
-            height: 2rem;
-            opacity: 0.9;
-        }
-
-        /* Final Logo Scene */
-        #scene-brand {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transform: scale(0.2);
-            pointer-events: none;
-            transition: all 2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 5;
-        }
-
-        #scene-brand.active {
-            opacity: 1;
-            transform: scale(1);
-            pointer-events: auto;
-        }
-
-        /* Logo Finale Styling */
-        #logo-container {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Sunlight Glow Effect */
-        .sunlight {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 40%, transparent 70%);
-            border-radius: 50%;
-            opacity: 0;
-            transform: scale(0.5);
-            transition: all 2s ease-out 0.5s;
-            pointer-events: none;
-            animation: pulse 4s infinite alternate;
-        }
-
-        #scene-brand.active .sunlight {
-            opacity: 1;
-            transform: scale(1.2);
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1.1); opacity: 0.3; }
-            100% { transform: scale(1.3); opacity: 0.6; }
-        }
-
-        #logo-container img {
-            width: clamp(250px, 40vw, 500px);
-            height: auto;
-            position: relative;
-            z-index: 2;
-            filter: drop-shadow(0 0 30px rgba(255,255,255,0.4));
-        }
-
-        /* Shiny Sweep Effect */
-        .shine-layer {
-            position: absolute;
-            top: 0; left: -150%;
-            width: 100%; height: 100%;
-            background: linear-gradient(
-                to right, 
-                transparent 0%, 
-                rgba(255,255,255,0) 30%, 
-                rgba(255,255,255,0.8) 50%, 
-                rgba(255,255,255,0) 70%, 
-                transparent 100%
-            );
-            transform: skewX(-30deg);
-            z-index: 3;
-            pointer-events: none;
-        }
-
-        #scene-brand.active .shine-layer {
-            left: 200%;
-            transition: left 2.5s cubic-bezier(0.4, 0, 0.2, 1) 1.5s;
-        }
-
-        /* Zoom transitions for previous scene */
-        .zoom-out {
-            transform: scale(5) !important;
-            opacity: 0 !important;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; }
+        .card-bg { background-color: #1e293b; border: 1px solid #334155; }
+        .btn-amber { background-color: #fbbf24; color: #0f172a; font-weight: 700; transition: all 0.3s; }
+        .btn-amber:hover { background-color: #f59e0b; }
+        .ticker-container { overflow: hidden; white-space: nowrap; }
+        .ticker-text { display: inline-block; padding-left: 100%; animation: ticker 20s linear infinite; }
+        @keyframes ticker { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+        .pulse-text { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; color: #fbbf24; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
 </head>
-<body>
+<body class="text-slate-100 min-h-screen">
 
-    <!-- Scene 1: Counters -->
-    <div id="scene-counters">
-        <div class="counters-grid">
-            <div class="counter-item">
-                <span class="number" id="count-countries">0</span>
-                <span class="label">Countries</span>
-            </div>
-            <div class="counter-item">
-                <span class="number" id="count-users">0</span>
-                <span class="label">Users</span>
-            </div>
-            <div class="counter-item">
-                <span class="number" id="count-companies">0</span>
-                <span class="label">Companies</span>
-            </div>
+    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950">
+        <div class="card-bg p-8 rounded-2xl w-full max-w-md shadow-2xl">
+            <h2 class="text-2xl font-bold mb-6 text-center text-white">GovBond Access Portal</h2>
+            <input id="user-input" type="text" placeholder="Username" class="w-full p-3 mb-4 bg-slate-900 border border-slate-700 rounded-lg text-white">
+            <input id="pass-input" type="password" placeholder="Password" class="w-full p-3 mb-6 bg-slate-900 border border-slate-700 rounded-lg text-white">
+            <button onclick="checkAuth()" class="w-full btn-amber py-3 rounded-lg">Enter Dashboard</button>
         </div>
-        <div id="country-name">Initializing...</div>
     </div>
 
-    <!-- Scene 2: Brand Logo (Only) -->
-    <div id="scene-brand">
-        <div id="logo-container">
-            <div class="sunlight"></div>
-            <div class="shine-layer"></div>
-            <img src="https://enkaare.com/assets/enkaare-logo-CyitWQQf.png" alt="Enkaare Logo">
+    <div id="app" class="hidden min-h-screen p-6">
+        <header class="max-w-6xl mx-auto flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold text-white">GovBond <span class="text-amber-400">Direct</span></h1>
+            <div class="flex items-center gap-4">
+                <span id="btc-price" class="text-sm font-mono text-amber-400 bg-slate-900 px-4 py-2 rounded-full border border-slate-700">BTC: Loading...</span>
+            </div>
+        </header>
+
+        <main class="max-w-6xl mx-auto space-y-6">
+            <!-- News Ticker -->
+            <div class="bg-slate-800 border border-slate-700 p-3 rounded-lg ticker-container">
+                <div class="ticker-text text-amber-400 text-sm">
+                    📢 NEWS: Treasury yields edge higher as inflation data released... <a href="#" class="underline">Read More</a> | Federal Reserve signals potential rate holds... <a href="#" class="underline">Read More</a>
+                </div>
+            </div>
+
+            <!-- Hero Card -->
+            <div class="card-bg p-8 rounded-2xl relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-3xl font-bold text-white mb-2">GovBond Direct Portfolio</h2>
+                    <p class="text-slate-400 mb-6">Manage your illustrative bond portfolio — deposit, track profit to maturity, and request withdrawals.</p>
+                    <div class="flex gap-4">
+                        <button class="bg-slate-700 text-white px-6 py-2 rounded-lg font-bold">HFT engines working</button>
+                        <button class="bg-slate-900 text-slate-400 px-6 py-2 rounded-lg font-bold">wait for update</button>
+                    </div>
+                </div>
+                <!-- Decorative element -->
+                <div class="absolute right-0 top-0 opacity-10 pointer-events-none">
+                    <svg width="300" height="300" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card-bg p-6 rounded-2xl">
+                    <p class="text-slate-400 text-sm uppercase tracking-wider font-semibold">Available Balance</p>
+                    <p class="text-4xl font-bold text-white mt-2">$1,500.00</p>
+                </div>
+                <div class="card-bg p-6 rounded-2xl">
+                    <p class="text-slate-400 text-sm uppercase tracking-wider font-semibold">Accrued Profit</p>
+                    <p class="text-4xl font-bold text-emerald-400 mt-2">+$5,894.00</p>
+                </div>
+                <div class="card-bg p-6 rounded-2xl">
+                    <p class="text-slate-400 text-sm uppercase tracking-wider font-semibold">Time to Maturity</p>
+                    <p id="maturity-clock" class="text-4xl font-bold text-white mt-2 font-mono pulse-text">2 days</p>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-4 items-center">
+                <button onclick="toggleModal('deposit-modal')" class="btn-amber px-8 py-3 rounded-xl flex items-center gap-2">Deposit</button>
+                <button id="withdraw-btn" onclick="handleWithdrawal()" class="bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-all">Withdraw</button>
+                <div class="bg-slate-800 border border-slate-700 px-4 py-3 rounded-xl text-amber-400 font-bold border-l-4 border-l-amber-400">
+                    Next Payout: 07/15/2026: 11:00 am
+                </div>
+            </div>
+
+            <!-- Legal/Contact -->
+            <div class="flex gap-4">
+                <button onclick="openLegal('terms')" class="bg-slate-800 text-slate-300 px-4 py-2 rounded-lg text-sm hover:text-white">Terms of Service</button>
+                <button onclick="openLegal('aml')" class="bg-slate-800 text-slate-300 px-4 py-2 rounded-lg text-sm hover:text-white">AML Compliance</button>
+                <a href="https://wa.me/+14012125905" target="_blank" class="bg-green-700 text-white px-4 py-2 rounded-lg text-sm">WhatsApp Support</a>
+                <a href="https://t.me/janesclan" target="_blank" class="bg-sky-700 text-white px-4 py-2 rounded-lg text-sm">Telegram Support</a>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="deposit-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
+        <div class="card-bg p-8 rounded-2xl w-full max-w-lg">
+            <h2 class="text-xl font-bold text-white mb-4">Deposit Assets</h2>
+            <div class="space-y-4">
+                <div class="p-4 bg-slate-900 border border-slate-700 rounded-lg cursor-pointer" onclick="copy('0xA18d7A53655f5fa110dd7D17A33FA1Ff8fc2Ef55')"><p class="text-amber-400 text-xs font-bold">ETH</p><p class="text-xs text-white font-mono break-all">0xA18d7A53655f5fa110dd7D17A33FA1Ff8fc2Ef55</p></div>
+                <div class="p-4 bg-slate-900 border border-slate-700 rounded-lg cursor-pointer" onclick="copy('bc1q3ucw3ddh8cszq63n5nesghnyluc2gkrsnq39ws')"><p class="text-amber-400 text-xs font-bold">BTC</p><p class="text-xs text-white font-mono break-all">bc1q3ucw3ddh8cszq63n5nesghnyluc2gkrsnq39ws</p></div>
+            </div>
+            <button onclick="toggleModal('deposit-modal')" class="mt-6 w-full py-3 bg-slate-700 text-white rounded-lg font-bold">Close</button>
+        </div>
+    </div>
+
+    <!-- Legal Modals -->
+    <div id="legal-modal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50">
+        <div class="card-bg p-8 rounded-2xl w-full max-w-lg">
+            <h2 id="legal-title" class="text-xl font-bold text-white mb-4"></h2>
+            <p id="legal-content" class="text-slate-400 text-sm mb-6"></p>
+            <button onclick="document.getElementById('legal-modal').classList.add('hidden')" class="w-full py-3 bg-slate-700 text-white rounded-lg">Close</button>
         </div>
     </div>
 
     <script>
-        const countries = [
-            "India", "China", "United States", "Indonesia", "Pakistan", "Nigeria", "Brazil", "Bangladesh", "Russia", "Mexico", 
-            "Japan", "Philippines", "Ethiopia", "Egypt", "DR Congo", "Vietnam", "Iran", "Turkey", "Germany", "Thailand", 
-            "United Kingdom", "France", "Tanzania", "South Africa", "Italy", "Myanmar", "Kenya", "South Korea", "Colombia", "Spain", 
-            "Argentina", "Algeria", "Sudan", "Uganda", "Ukraine", "Iraq", "Canada", "Poland", "Morocco", "Saudi Arabia", 
-            "Uzbekistan", "Peru", "Malaysia", "Afghanistan", "Ghana", "Angola", "Mozambique", "Yemen", "Nepal", "Madagascar", 
-            "Venezuela", "Côte d'Ivoire", "Cameroon", "Niger", "Australia", "North Korea", "Taiwan", "Sri Lanka", "Burkina Faso", "Mali", 
-            "Romania", "Malawi", "Chile", "Kazakhstan", "Guatemala", "Zambia", "Ecuador", "Netherlands", "Syria", "Senegal", 
-            "Chad", "Somalia", "Cambodia", "Zimbabwe", "Guinea", "Rwanda", "Benin", "Burundi", "Tunisia", "Bolivia", 
-            "Haiti", "Belgium", "Jordan", "Dominican Republic", "Cuba", "South Sudan", "Sweden", "Honduras", "Czech Republic", "Azerbaijan", 
-            "Greece", "Portugal", "Hungary", "Tajikistan", "UAE", "Belarus", "Israel", "Austria", "Switzerland", "Togo"
-        ];
-
-        const duration = 4000; // 4 seconds total for counters
-
-        function animateValues() {
-            const countryCountEl = document.getElementById('count-countries');
-            const userCountEl = document.getElementById('count-users');
-            const companyCountEl = document.getElementById('count-companies');
-            const countryNameEl = document.getElementById('country-name');
-
-            let startTime = null;
-
-            function step(timestamp) {
-                if (!startTime) startTime = timestamp;
-                const progress = Math.min((timestamp - startTime) / duration, 1);
-
-                // Counters
-                const currentCountryVal = Math.floor(progress * countries.length);
-                const currentUserVal = Math.floor(progress * 526);
-                const currentCompanyVal = Math.floor(progress * 9);
-
-                countryCountEl.innerText = Math.max(1, currentCountryVal);
-                userCountEl.innerText = Math.max(1, currentUserVal);
-                companyCountEl.innerText = Math.max(1, currentCompanyVal);
-
-                // Country Name Cycling
-                const nameIndex = Math.floor(progress * (countries.length - 1));
-                countryNameEl.innerText = countries[nameIndex];
-
-                if (progress < 1) {
-                    requestAnimationFrame(step);
-                } else {
-                    // Final display check
-                    countryCountEl.innerText = countries.length;
-                    userCountEl.innerText = 526;
-                    companyCountEl.innerText = 9;
-                    countryNameEl.innerText = countries[countries.length - 1];
-                    
-                    // Trigger Transition
-                    setTimeout(triggerTransition, 800);
-                }
-            }
-
-            requestAnimationFrame(step);
+        function checkAuth() {
+            if (document.getElementById('user-input').value === 'powerful' && document.getElementById('pass-input').value === 'powerful') {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+            } else { alert('Invalid Credentials'); }
         }
 
-        function triggerTransition() {
-            const scene1 = document.getElementById('scene-counters');
-            const scene2 = document.getElementById('scene-brand');
+        function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
 
-            // Zoom out effect for the numbers
-            scene1.classList.add('zoom-out');
-            
-            // Activate the brand logo scene
-            setTimeout(() => {
-                scene2.classList.add('active');
-            }, 600);
+        function openLegal(type) {
+            const m = document.getElementById('legal-modal');
+            const t = document.getElementById('legal-title');
+            const c = document.getElementById('legal-content');
+            if(type === 'terms') { t.innerText = 'Terms of Service'; c.innerText = 'By accessing GovBond Direct, you acknowledge the inherent risks of bond market fluctuations. Past performance is not indicative of future results.'; }
+            else { t.innerText = 'AML Compliance'; c.innerText = 'All users must verify their identity. We adhere to federal banking regulations and monitor for suspicious activity.'; }
+            m.classList.remove('hidden');
         }
 
-        window.onload = animateValues;
+        async function fetchBtc() {
+            try {
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+                const d = await res.json();
+                document.getElementById('btc-price').innerText = 'BTC/USD $' + d.bitcoin.usd.toLocaleString();
+            } catch (e) { document.getElementById('btc-price').innerText = 'BTC/USD Error'; }
+        }
+        setInterval(fetchBtc, 30000); fetchBtc();
+
+        function handleWithdrawal() {
+            const btn = document.getElementById('withdraw-btn');
+            btn.innerText = "Processing...";
+            const o = document.createElement('div');
+            o.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 text-white font-bold text-xl';
+            o.innerHTML = 'Processing, please check your email for confirmation...';
+            document.body.appendChild(o);
+            setTimeout(() => { o.remove(); btn.innerText = "Withdrawal Pending"; btn.className = 'bg-yellow-600 text-white px-8 py-3 rounded-xl font-bold'; }, 2000);
+        }
+
+        function copy(t) { navigator.clipboard.writeText(t); alert('Copied!'); }
     </script>
 </body>
 </html>
