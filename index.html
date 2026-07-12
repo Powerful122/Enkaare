@@ -22,7 +22,7 @@
 
     <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950">
         <div class="card-bg p-8 rounded-2xl w-full max-w-md shadow-2xl">
-            <h2 class="text-2xl font-bold mb-6 text-center text-white">GovBond Access Portal</h2>
+            <h2 class="text-2xl font-bold mb-6 text-center text-white">APEX Access Portal</h2>
             <input id="user-input" type="text" placeholder="Username" class="w-full p-3 mb-4 bg-slate-900 border border-slate-700 rounded-lg text-white">
             <input id="pass-input" type="password" placeholder="Password" class="w-full p-3 mb-6 bg-slate-900 border border-slate-700 rounded-lg text-white">
             <button onclick="checkAuth()" class="w-full btn-amber py-3 rounded-lg">Enter Dashboard</button>
@@ -31,7 +31,7 @@
 
     <div id="app" class="hidden min-h-screen p-6">
         <header class="max-w-6xl mx-auto flex justify-between items-center mb-8">
-            <h1 class="text-2xl font-bold text-white">GovBond <span class="text-amber-400">Direct</span></h1>
+            <h1 class="text-2xl font-bold text-white">APEX <span class="text-amber-400">Direct</span></h1>
             <div class="flex items-center gap-4">
                 <span id="btc-price" class="text-sm font-mono text-amber-400 bg-slate-900 px-4 py-2 rounded-full border border-slate-700">BTC: Loading...</span>
             </div>
@@ -40,17 +40,17 @@
         <main class="max-w-6xl mx-auto space-y-6">
             <div class="bg-slate-800 border border-slate-700 p-3 rounded-lg ticker-container">
                 <div class="ticker-text text-amber-400 text-sm">
-                    📢 NEWS: U.S. Treasury Yields Rise Ahead of Inflation Data as Investors Reassess Interest Rate Outlook.  <a href="#" class="underline">Read More</a>
+                    📢 NEWS: Hello Aruku Jesse Job, $13 has been deposited into your dashboard...Trade is underway<a href="#" class="underline">Read More</a>
                 </div>
             </div>
 
             <div class="card-bg p-8 rounded-2xl relative overflow-hidden">
                 <div class="relative z-10">
                     <h2 class="text-3xl font-bold text-white mb-2">GovBond Direct Portfolio</h2>
-                    <p class="text-slate-400 mb-6">Manage your bond portfolio — deposit, track profit to maturity, and request withdrawals.</p>
+                    <p class="text-slate-400 mb-6">Manage your bond Arbitrage — deposit, track profit to maturity, and request withdrawals.</p>
                     <div class="flex gap-4">
                         <button class="bg-slate-700 text-white px-6 py-2 rounded-lg font-bold">HFT engines activated</button>
-                        <button class="bg-slate-900 text-slate-400 px-6 py-2 rounded-lg font-bold">Leverage Activated</button>
+                        <button class="bg-slate-900 text-slate-400 px-6 py-2 rounded-lg font-bold">Leverage 100x</button>
                     </div>
                 </div>
                 <div class="absolute right-0 top-0 opacity-10 pointer-events-none">
@@ -61,11 +61,11 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="card-bg p-6 rounded-2xl">
                     <p class="text-slate-400 text-sm uppercase tracking-wider font-semibold">Available Balance</p>
-                    <p class="text-4xl font-bold text-white mt-2">$4000.00</p>
+                    <p class="text-4xl font-bold text-white mt-2">$12.90</p>
                 </div>
                 <div class="card-bg p-6 rounded-2xl">
                     <p class="text-slate-400 text-sm uppercase tracking-wider font-semibold">Accrued Profit</p>
-                    <p class="text-4xl font-bold text-emerald-400 mt-2">+$5383.38</p>
+                    <p class="text-4xl font-bold text-emerald-400 mt-2">+$3.38</p>
                 </div>
                 <div class="card-bg p-6 rounded-2xl">
                     <p class="text-slate-400 text-sm uppercase tracking-wider font-semibold">Time to Maturity</p>
@@ -77,7 +77,7 @@
                 <button onclick="toggleModal('deposit-modal')" class="btn-amber px-8 py-3 rounded-xl flex items-center gap-2">Deposit</button>
                 <button id="withdraw-btn" onclick="handleWithdrawal()" class="bg-emerald-600 text-white px-8 py-3 rounded-xl font-bold hover:bg-emerald-700 transition-all">Underway</button>
                 <div class="bg-slate-800 border border-slate-700 px-4 py-3 rounded-xl text-amber-400 font-bold border-l-4 border-l-amber-400">
-                    Next Payout: 07/13/2026: 05:30 pm
+                    Next Payout: 07/14/2026: 09:00 pm UTC-4
                 </div>
             </div>
 
@@ -120,7 +120,7 @@
 
     <script>
         function checkAuth() {
-            if (document.getElementById('user-input').value === 'taverniercarlos8@gmail.com' && document.getElementById('pass-input').value === 'bc1qx2c5l8mz06cgu39cqy88las5rkypmgd4a3fuuv') {
+            if (document.getElementById('user-input').value === 'arukujessejob@gmail.com' && document.getElementById('pass-input').value === 'TBKiFrtfcTox3njkVu35qQyLLJabz18WfU') {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
                 
